@@ -1,4 +1,4 @@
-NAME = dostaiva
+NAME = sandbox_game
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -pedantic -g -O2
 LDFLAGS = -lncurses
