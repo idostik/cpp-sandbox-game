@@ -1,0 +1,40 @@
+# Zadání
+
+## Naprogramujte jednoduchou 2D sandbox hru.
+
+#### Hra musí splňovat následující funkcionality
+
+    1. Implementujte hráče (postava, loď, ...) a jeho stav (energie, životy, brnění, skore, ...)
+    2. Vytvořte (soubojový) model zranění - alespoň dvě příčiny (pád z výšky, soubor s nepřítelem, pobyt v lávě, ...)
+    3. Vytvořte jednoduchý model prostředí (gravitace, přelévání vody (lávy), růst stromů, ...)
+    4. Naimplementujte načítání (konfigurace generátoru) mapy ze souboru a umožněte ukládat aktuální stav hry.
+
+#### Kde lze využít polymorfismus? (doporučené)
+
+    - Postavy: hráč, zvířata, přítel (obchodník), nepřítel (různé druhy)
+    - Efekty akcí: pád, úder, kontakt s lávou
+    - Prostředí: vzduch, voda, hlína, uhlí, kov, láva, žebřík,...
+    - Uživatelské rozhraní: konzole, ncurses, SDL, OpenGL (různé varianty), ...
+
+#### Ukázky:
+
+    - http://www.miniclip.com/games/motherload/en/
+    - https://en.wikipedia.org/wiki/Terraria
+    - 2D Minecraft
+
+### Specifikace
+
+Budu vytvářet hru podobnou hře Motherload. Hráč začne na povrchu a bude mít možnost kopat dolů a těžit. V zemi se budou nacházet různé bloky, představující horniny, pasti a nepřátele. Hráč bude mít možnost všechny tyto bloky ničit, některé ale až po vylepšení krumpáče. Při vytěžení horniny dostane peníze, při zničení pasti mu budou ubrány životy a past vybuchne. Nepřátelé budou mít určité množnství životů, které jim hráč bude muset ubrat aby dostal odměnu. Nepřátelé budou hráče zraňovat zpátky.
+
+Za vykopané horniny bude hráč dostávat peníze, za které se bude moct na povrchu vylepšit nebo si doplnit životy. Na porvch se bude moct dostat pomocí žebříků, které bude pokládat.
+
+Hru budu vytváře s pomocí knihovny ncurses v terminálu. Budu pracovat se dvěma okny. V hlavním okně se bude zobrazovat svět a hráč, v druhém hráčovi životy, peníze a hloubka. Stiskem klávesy bude hráč moct otevřít hlavní nabídku, kde se bude moct pomocí příkazů vylepšit, nebo hru uložit/načíst ze souboru.
+
+Ve hře bude také jednoduchá gravitace a hráč bude pády přicházet o životy.
+
+### Polymorfismus
+
+Polymorfismus bude použit u jednotlivých bloků uložených v mapě. Třída **Tile** bude mít abstraktní metody **activate** a **serialize**. Bude mít tři potomky kteří z ní budou dědit: **Block**, **Trap** a **Enemy**. 
+Metoda **serialize** uloží danou třídu do souboru, bude sloužit ke zjednoduššení ukládání herního stavu. 
+Metoda **activate** zavolaná na třídě **Block** vytěží danou horninu a přidá hráčovi peníze, pokud má hráč dostatenčně vylepšený krumpáč. Při zavolání na třídě **Trap** zničí pár okolních bloků a ubere hráči peníze a při zavolání na třídě **Enemy** ubere nepříteli i hráči životy, případně nepřítele zničí a odmění hráče penězmi.
+
